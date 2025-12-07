@@ -17,9 +17,9 @@ export const Hero: React.FC = () => {
 
       {/* Content */}
       <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center sm:text-left w-full mt-[-60px]">
-        <span className="inline-block px-4 py-1 mb-6 text-sm font-semibold tracking-wider text-orange-400 uppercase bg-orange-900/30 rounded-full border border-orange-500/30 backdrop-blur-sm">
+        <a href="#register" className="inline-block px-4 py-1 mb-6 text-sm font-semibold tracking-wider text-orange-400 uppercase bg-orange-900/30 rounded-full border border-orange-500/30 backdrop-blur-sm hover:bg-orange-900/50 transition-colors cursor-pointer">
           Admissions Open for 2024-25
-        </span>
+        </a>
         <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white leading-tight mb-6 drop-shadow-lg">
           Shape Your Future With <br />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-400 to-orange-200">

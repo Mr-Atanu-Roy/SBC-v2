@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Book, Microscope, Calculator, Globe, Atom, ArrowRight, Tag } from 'lucide-react';
 import { ClassCardProps, CourseProps, FacultyProps } from '../types';
@@ -30,10 +29,6 @@ export const Mission: React.FC = () => {
               <div>
                 <h3 className="text-3xl font-bold text-slate-900">95%</h3>
                 <p className="text-slate-500 text-sm">Success Rate</p>
-              </div>
-              <div>
-                <h3 className="text-3xl font-bold text-slate-900">50+</h3>
-                <p className="text-slate-500 text-sm">Expert Mentors</p>
               </div>
             </div>
              <button className="mt-6 text-primary-600 font-bold hover:text-primary-700 flex items-center gap-2 group">
@@ -222,10 +217,10 @@ export const FeaturedCourses: React.FC = () => {
 
 /* --- Faculty Section --- */
 const facultyData: FacultyProps[] = [
-  { name: "Dr. A. Verma", role: "Senior Physics Faculty", subject: "Physics", image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=300", experience: "20 Years Exp." },
-  { name: "Mrs. S. Gupta", role: "HOD Mathematics", subject: "Mathematics", image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=300", experience: "15 Years Exp." },
-  { name: "Mr. R. Khanna", role: "Chemistry Expert", subject: "Chemistry", image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=300", experience: "12 Years Exp." },
-  { name: "Ms. P. Das", role: "Biology Mentor", subject: "Biology", image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=300", experience: "10 Years Exp." },
+  { name: "Chayon Ghosh", role: "Senior Physics Faculty", subject: "Physics", image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=300", experience: "20 Years Exp." },
+  { name: "Krishanu Ghosh", role: "HOD Mathematics", subject: "Mathematics", image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=300", experience: "15 Years Exp." },
+  { name: "Sanjukta Majumder", role: "Chemistry Expert", subject: "Chemistry", image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=300", experience: "12 Years Exp." },
+  { name: "Jaydeep Dey", role: "Biology Mentor", subject: "Biology", image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=300", experience: "10 Years Exp." },
 ];
 
 export const Faculty: React.FC = () => {

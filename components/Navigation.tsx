@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { GraduationCap, Menu, X, ChevronDown, Phone, Mail, MapPin, Facebook, Linkedin, ArrowRight, Map, MessageCircle } from 'lucide-react';
 import { NavItem, DropdownItem } from '../types';
@@ -48,7 +47,7 @@ export const Header: React.FC = () => {
               <GraduationCap size={28} />
             </div>
             <span className={`font-bold text-2xl tracking-tight transition-colors ${logoTextClass}`}>
-              Edu<span className={isScrolled ? 'text-primary-600' : 'text-orange-300'}>Spark</span>
+              Sandip<span className={isScrolled ? 'text-primary-600' : 'text-orange-300'}>BanerjeeClasses</span>
             </span>
           </div>
 
@@ -157,7 +156,7 @@ export const Footer: React.FC = () => {
                 <GraduationCap size={24} />
               </div>
               <span className="font-bold text-xl tracking-tight">
-                Edu<span className="text-primary-500">Spark</span>
+                Sandip<span className="text-primary-500">BanerjeeClasses</span>
               </span>
             </div>
             <p className="text-slate-400 text-sm leading-relaxed">
@@ -206,14 +205,14 @@ export const Footer: React.FC = () => {
               </li>
               <li className="flex items-center gap-3">
                 <Mail size={18} className="text-primary-500 shrink-0" />
-                <span>admissions@eduspark.com</span>
+                <span>support@sandipbanerjeeclasses.com</span>
               </li>
             </ul>
           </div>
         </div>
 
         <div className="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-slate-500 text-sm">© 2024 EduSpark Coaching. All rights reserved.</p>
+          <p className="text-slate-500 text-sm">© {new Date().getFullYear()} SandipBanerjeeClasses. All rights reserved.</p>
           <div className="flex gap-6 text-sm text-slate-500">
             <a href="#" className="hover:text-white">Created by John Doe</a>
           </div>
