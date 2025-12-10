@@ -1,4 +1,6 @@
 
+export type PageType = 'home' | 'enquiry';
+
 export interface NavItem {
   label: string;
   href: string;

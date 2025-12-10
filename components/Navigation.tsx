@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { GraduationCap, Menu, X, ChevronDown, Phone, Mail, MapPin, Facebook, Linkedin, ArrowRight, Map, MessageCircle } from 'lucide-react';
-import { NavItem, DropdownItem } from '../types';
+import { GraduationCap, Menu, X, ChevronDown, Phone, Mail, MapPin, Map, MessageCircle, ArrowRight } from 'lucide-react';
+import { NavItem, DropdownItem, PageType } from '../types';
 
 const navLinks: NavItem[] = [
   { label: 'Home', href: '#' },
   { label: 'About', href: '#mission' },
-  { label: 'Contact', href: '#footer' },
+  { label: 'Enquiry', href: '#enquiry' },
 ];
 
 const courseDropdown: DropdownItem[] = [
@@ -15,7 +15,12 @@ const courseDropdown: DropdownItem[] = [
   { label: 'Class 12 Target', href: '#' },
 ];
 
-export const Header: React.FC = () => {
+interface HeaderProps {
+  activePage: PageType;
+  onNavigate: (page: PageType) => void;
+}
+
+export const Header: React.FC<HeaderProps> = ({ activePage, onNavigate }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -28,26 +33,59 @@ export const Header: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Dynamic classes based on scroll state
-  const headerClass = isScrolled
+  // Determine if we should show the scrolled/solid header style
+  // We show it if scrolled OR if we are NOT on the home page (inner pages get solid header)
+  const isHome = activePage === 'home';
+  const effectiveIsScrolled = isScrolled || !isHome;
+
+  // Dynamic classes based on scroll state and active page
+  const headerClass = effectiveIsScrolled
     ? 'bg-white/95 backdrop-blur-md shadow-md border-b border-orange-100 py-0'
     : 'bg-transparent border-transparent py-4';
     
-  const textClass = isScrolled ? 'text-slate-600 hover:text-primary-600' : 'text-white/90 hover:text-white';
-  const logoTextClass = isScrolled ? 'text-slate-900' : 'text-white';
-  const dropdownButtonClass = isScrolled ? 'text-slate-600 group-hover:text-primary-600' : 'text-white/90 group-hover:text-white';
+  const textClass = effectiveIsScrolled ? 'text-slate-600 hover:text-primary-600' : 'text-white/90 hover:text-white';
+  const logoTextClass = effectiveIsScrolled ? 'text-slate-900' : 'text-white';
+  const dropdownButtonClass = effectiveIsScrolled ? 'text-slate-600 group-hover:text-primary-600' : 'text-white/90 group-hover:text-white';
+
+  const handleNavClick = (e: React.MouseEvent, link: NavItem) => {
+    e.preventDefault();
+    if (link.label === 'Home') {
+      onNavigate('home');
+      window.scrollTo(0, 0);
+    } else if (link.label === 'Enquiry') {
+      onNavigate('enquiry');
+      window.scrollTo(0, 0);
+    } else {
+      // For 'About' or others, go home then scroll
+      if (!isHome) {
+        onNavigate('home');
+        // Small timeout to allow render before scrolling
+        setTimeout(() => {
+           const element = document.querySelector(link.href);
+           element?.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      } else {
+        const element = document.querySelector(link.href);
+        element?.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+    setIsMobileMenuOpen(false);
+  };
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 ${headerClass}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
-          <div className="flex-shrink-0 flex items-center gap-2 cursor-pointer">
+          <div 
+            className="flex-shrink-0 flex items-center gap-2 cursor-pointer"
+            onClick={() => { onNavigate('home'); window.scrollTo(0, 0); }}
+          >
             <div className="bg-primary-500 p-2 rounded-lg text-white shadow-lg">
               <GraduationCap size={28} />
             </div>
             <span className={`font-bold text-2xl tracking-tight transition-colors ${logoTextClass}`}>
-              Sandip<span className={isScrolled ? 'text-primary-600' : 'text-orange-300'}>BanerjeeClasses</span>
+              Sandip<span className={effectiveIsScrolled ? 'text-primary-600' : 'text-orange-300'}>BanerjeeClasses</span>
             </span>
           </div>
 
@@ -57,14 +95,14 @@ export const Header: React.FC = () => {
               <a
                 key={link.label}
                 href={link.href}
-                className={`${textClass} font-medium transition-colors`}
+                onClick={(e) => handleNavClick(e, link)}
+                className={`${textClass} font-medium transition-colors ${activePage === 'enquiry' && link.label === 'Enquiry' ? 'text-primary-600 font-bold' : ''}`}
               >
                 {link.label}
               </a>
             ))}
 
             {/* Dropdown */}
-            {/* Added h-full to parent to ensure no hover gap */}
             <div 
               className="relative group h-full flex items-center"
               onMouseEnter={() => setIsDropdownOpen(true)}
@@ -74,7 +112,6 @@ export const Header: React.FC = () => {
                 Courses <ChevronDown size={16} className={`transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`} />
               </button>
               
-              {/* Dropdown Content - Positioned at top-full to eliminate gap */}
               <div className={`absolute top-full left-0 w-64 bg-white rounded-b-xl rounded-tr-xl shadow-xl border-t-4 border-primary-500 overflow-hidden transition-all duration-200 origin-top transform ${isDropdownOpen ? 'opacity-100 scale-100 translate-y-0 visible' : 'opacity-0 scale-95 -translate-y-2 invisible'}`}>
                 <div className="py-2">
                   {courseDropdown.map((item) => (
@@ -90,16 +127,19 @@ export const Header: React.FC = () => {
               </div>
             </div>
 
-            <a href="#register" className="ml-4 px-6 py-2.5 bg-primary-600 text-white rounded-full font-semibold shadow-lg shadow-primary-500/30 hover:bg-primary-700 hover:shadow-primary-500/50 transition-all transform hover:-translate-y-0.5">
+            <button 
+              onClick={() => { onNavigate('enquiry'); window.scrollTo(0, 0); }}
+              className="ml-4 px-6 py-2.5 bg-primary-600 text-white rounded-full font-semibold shadow-lg shadow-primary-500/30 hover:bg-primary-700 hover:shadow-primary-500/50 transition-all transform hover:-translate-y-0.5"
+            >
               Register Now
-            </a>
+            </button>
           </nav>
 
           {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className={`${isScrolled ? 'text-slate-600' : 'text-white'} hover:text-primary-500 focus:outline-none transition-colors`}
+              className={`${effectiveIsScrolled ? 'text-slate-600' : 'text-white'} hover:text-primary-500 focus:outline-none transition-colors`}
             >
               {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
             </button>
@@ -115,8 +155,8 @@ export const Header: React.FC = () => {
               <a
                 key={link.label}
                 href={link.href}
+                onClick={(e) => handleNavClick(e, link)}
                 className="block px-3 py-3 rounded-md text-base font-medium text-slate-700 hover:text-primary-600 hover:bg-primary-50"
-                onClick={() => setIsMobileMenuOpen(false)}
               >
                 {link.label}
               </a>
@@ -133,9 +173,12 @@ export const Header: React.FC = () => {
              </a>
             ))}
             <div className="mt-4 px-3">
-              <a href="#register" className="block w-full text-center px-6 py-3 bg-primary-600 text-white rounded-lg font-bold shadow-md">
+              <button 
+                onClick={() => { onNavigate('enquiry'); setIsMobileMenuOpen(false); window.scrollTo(0, 0); }}
+                className="block w-full text-center px-6 py-3 bg-primary-600 text-white rounded-lg font-bold shadow-md"
+              >
                 Register Now
-              </a>
+              </button>
             </div>
           </div>
         </div>
@@ -163,8 +206,6 @@ export const Footer: React.FC = () => {
               Empowering students to achieve academic excellence through personalized coaching and modern methodologies.
             </p>
             <div className="flex space-x-4 pt-2">
-              <a href="#" className="text-slate-400 hover:text-primary-500 transition-colors" title="Facebook"><Facebook size={20} /></a>
-              <a href="#" className="text-slate-400 hover:text-primary-500 transition-colors" title="LinkedIn"><Linkedin size={20} /></a>
               <a href="https://maps.google.com" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-primary-500 transition-colors" title="Locate on Map"><Map size={20} /></a>
             </div>
           </div>
